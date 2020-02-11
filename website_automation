@@ -1,0 +1,100 @@
+package automationPractice;
+
+import java.util.Set;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class AutomationPractice_CrossAssyst2 {
+
+WebDriver driver=null;
+	
+	@BeforeTest
+	public  void setUpTest() {
+		
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver_80.exe");
+		driver=new ChromeDriver();
+		 
+	}
+	
+	@Test(priority=1)
+	public  void login_Register() {
+		
+		  driver.get("http://automationpractice.com/index.php");
+		  driver.manage().window().maximize();
+		  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		  driver.findElement(By.xpath("//a[@class='login']")).click();
+		  driver.findElement(By.xpath("//input[@id='email_create']")).sendKeys("induhari152938@gmail.com");
+		  driver.findElement(By.xpath("//form[@id='create-account_form']//span[1]")).click();
+		  driver.findElement(By.id("id_gender2")).click();
+		  driver.findElement(By.id("customer_firstname")).sendKeys("Indumathi");
+		  driver.findElement(By.id("customer_lastname")).sendKeys("Hari");
+		  driver.findElement(By.id("passwd")).sendKeys("Abc@123");
+		  driver.findElement(By.id("firstname")).sendKeys("Indumathi");
+		  driver.findElement(By.id("lastname")).sendKeys("Hari");
+		  driver.findElement(By.id("address1")).sendKeys("Airoli");
+		  driver.findElement(By.id("city")).sendKeys("Mumbai");
+		  Select statename =new Select(driver.findElement(By.id("id_state")));
+		  statename.selectByVisibleText("California");
+		  driver.findElement(By.id("postcode")).sendKeys("00004");
+		  Select countryname =new Select(driver.findElement(By.id("id_country")));
+		  countryname.selectByValue("21");
+		  driver.findElement(By.id("phone_mobile")).sendKeys("12345678");
+		  driver.findElement(By.id("submitAccount")).click();
+	}
+		  
+		 
+    @Test(priority=2)
+	public void login_WithCredentials() throws InterruptedException {
+		
+		  driver.get("http://automationpractice.com/index.php");
+		  driver.manage().window().maximize();
+		  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		  driver.findElement(By.xpath("//a[@class='login']")).click();
+		  driver.findElement(By.id("email")).sendKeys("induhari152936@gmail.com");
+		  driver.findElement(By.id("passwd")).sendKeys("Abc@123");
+		  driver.findElement(By.xpath("//p[@class='submit']//span[1]")).click();
+		  driver.findElement(By.xpath("//a[@class='sf-with-ul'][contains(text(),'Women')]")).click();
+		  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		  JavascriptExecutor js = (JavascriptExecutor) driver;
+		  js.executeScript("window.scrollBy(0,1000)");
+		  Actions builder = new Actions(driver);
+	      WebElement productpick = driver.findElement(By.xpath("//li[@class='ajax_block_product col-xs-12 col-sm-6 col-md-4 last-item-of-tablet-line']//img[@class='replace-2x img-responsive']")); 
+	      builder.moveToElement(productpick).click().build().perform();
+	      WebDriverWait wait = new WebDriverWait(driver, 10);
+	      driver.findElement(By.xpath("//li[@class='ajax_block_product col-xs-12 col-sm-6 col-md-4 last-item-of-tablet-line']//span[contains(text(),'Quick view')]")).click();          
+	      WebElement frame = driver.findElement(By.cssSelector("body.product.product-2.product-blouse.category-3.category-women.hide-left-column.hide-right-column.content_only.lang_en:nth-child(2) div:nth-child(1) div.primary_block.row > div.pb-left-column.col-xs-12.col-sm-4.col-md-5"));
+		  driver.switchTo().frame("fancybox-frame1581351546289");
+	      driver.findElement(By.xpath("//span[contains(text(),'Add to cart')]")).click();
+	      driver.findElement(By.xpath("//span[contains(text(),'Proceed to checkout')]")).click();
+	      driver.findElement(By.xpath("//a[@class='button btn btn-default standard-checkout button-medium']//span[contains(text(),'Proceed to checkout')]")).click();
+	      driver.findElement(By.xpath("//button[@name='processAddress']//span[contains(text(),'Proceed to checkout')]")).click();
+	      driver.findElement(By.id("cgv")).click();
+	      driver.findElement(By.xpath("//button[@name='processCarrier']//span[contains(text(),'Proceed to checkout')]")).click();
+	      driver.findElement(By.xpath("//a[@class='cheque']")).click();
+	      driver.findElement(By.xpath("//span[contains(text(),'I confirm my order')]")).click();
+	          
+	}
+	
+		 
+	
+	@AfterTest
+    public  void TearDownTest() {
+		
+	  driver.close();
+	  System.out.println("test successful");
+	}
+}
+
